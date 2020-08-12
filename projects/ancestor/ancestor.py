@@ -1,3 +1,25 @@
+# Suppose we have some input data describing a graph of relationships between parents and children over multiple generations. 
+# The data is formatted as a list of (parent, child) pairs, where each individual is assigned a unique integer identifier.
+
+# Write a function that, given the dataset and the ID of an individual in the dataset, returns their earliest known ancestor – the one at the farthest distance from the input individual. If there is more than one ancestor tied for "earliest", return the one with the lowest numeric ID. 
+# If the input individual has no parents, the function should return -1.
+
+# Example input
+#   6
+
+#   1 3
+#   2 3
+#   3 6
+#   5 6
+#   5 7
+#   4 5
+#   4 8
+#   8 9
+#   11 8
+#   10 1
+# Example output
+#   10
+
 from util import Stack, Queue
 
 test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
@@ -28,13 +50,13 @@ def earliest_ancestor(ancestors, starting_node):
             if has_parents(ancestors,v):
                 # Clear the most recent parents list
                 most_recent.clear()
-                # Enqueue the parents and add the parents to the most recent
+                # Enqueue the parents and add the parents to the most recent list
                 # Parents list
                 for parent,child in ancestors:
                     if child == v:
                         q.enqueue(parent)
                         print(f"queueing {parent} as the parents of {v}")
-                        # reset the most recent parents
+                        # Reset the most recent parents
                         most_recent.append(parent)
 
                 print()
@@ -56,8 +78,7 @@ ancestor = earliest_ancestor(test_ancestors,6)
 print(f"The earliest ancestor to the input is {ancestor}")
 
 
-#  First Attempt
-
+#  First Attempt:
 #     class Graph:
 #     """Represent a graph as a dictionary of vertices mapping labels to edges."""
 #     def __init__(self):
