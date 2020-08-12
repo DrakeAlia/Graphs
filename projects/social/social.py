@@ -1,3 +1,6 @@
+from random import shuffle
+from util import Queue
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -7,6 +10,7 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
+        self.non_mutual = []
 
     def add_friendship(self, user_id, friend_id):
         """
@@ -45,8 +49,21 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        # For loop that calls the create user the right amount of times
+        for i in range(num_users):
+            self.add_user(f"{i + 1}")
+        # Shuffle the list, then grab the first N elements from the list
+        possible_friendships = []
+        for user_id in self.users:
+            for friend_id in range(user_id +1, self.last_id +1):
+                possible_friendships.append((user_id,friend_id))
+        
+        shuffle(possible_friendships)
 
         # Create friendships
+        for i in range(num_users * avg_friendships // 2):
+            friendship = possible_friendships[i]
+            self.add_friendship(friendship[0],friendship[1])
 
     def get_all_social_paths(self, user_id):
         """
@@ -58,9 +75,34 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
-        return visited
+        direct_friends = self.friendships[user_id]
+        print(f"\nImmediate Friends {direct_friends}")
 
+        if len(direct_friends) == 0:
+            print(f"User {user_id} has no friends :(")
+            return {}
+
+        q = Queue()
+        q.enqueue([user_id])
+        while q.size() > 0:
+            # Grab the first path
+            path = q.dequeue()
+            # Get the last node in the path
+            v = path[-1]
+            if v not in visited:
+                # Add the path to the id
+                visited[v] = path
+                
+                for friend in self.friendships[v]:
+                    path_copy = path.copy()
+                    path_copy.append(friend)
+                    q.enqueue(path_copy)
+
+        for user in self.users:
+            if user not in visited:
+                self.non_mutual.append(user)
+
+        return visited
 
 if __name__ == '__main__':
     sg = SocialGraph()
@@ -68,3 +110,4 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
+    print(f"These users have no mutual friend {sg.non_mutual}")
