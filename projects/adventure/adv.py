@@ -73,7 +73,7 @@ traversal_path = []
 
 # Get the reverse direction of the direction just traveled
 reverse_dir = {"n": "s", "s": "n", "e": "w", "w": "e"}
-# add the reverse direction to reverse course
+# Add the reverse direction to reverse course
 reverse_path = []
 
 # Dictionary of exits
@@ -99,16 +99,16 @@ while len(rooms) < len(room_graph) - 1:
         reverse = reverse_path.pop()
         # Add the reverse direction to traversal_path
         traversal_path.append(reverse)
-        # Next, travel in that direction
+        # Next travel in that direction
         player.travel(reverse)
 
     # Travel to first available exit in the current room
     exit_dir = rooms[player.current_room.id].pop(0)
-    # Next, add to the traversal path
+    # Next add to the traversal path
     traversal_path.append(exit_dir)
     # Add the reverse direction to reverse path
     reverse_path.append(reverse_dir[exit_dir])
-    # Next, travel to next room
+    # Next travel to the next room
     player.travel(exit_dir)
 
 # print(rooms)
