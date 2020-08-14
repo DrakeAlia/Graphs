@@ -2,8 +2,6 @@
 # The functionality behind creating users and friendships has been completed already. Your job is to implement a function that shows all the friends in a user's extended social network and chain of friendships that link them. The number of connections between one user and another are called the degrees of separation.
 # Your client is also interested in how the performance will scale as more users join so she has asked you to implement a feature that creates large numbers of users to the network and assigns them a random distribution of friends.
 
-
-
 from random import shuffle
 from util import Queue
 
@@ -119,7 +117,7 @@ if __name__ == '__main__':
     connections = sg.get_all_social_paths(1)
     print(connections)
     #  Print out for users who have no mutual friends 
-    print(f"These users have no mutual friend {sg.non_mutual}")
+    print(f"These users have no mutual friends {sg.non_mutual}")
 
 
 # Other Method, but was getting a large array of nums:
